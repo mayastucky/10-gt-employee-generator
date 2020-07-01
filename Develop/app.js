@@ -105,7 +105,7 @@ inquirer
 
     if (response.done === "Yes") {
       console.log("I want to add more team members");
-      inquirer.prompt(questions);
+      return inquirer.prompt(questions);
     } else {
       console.log("I don't want to add more team members.");
       fs.writeFileSync(outputPath, render(employeeInformation), "utf-8");
