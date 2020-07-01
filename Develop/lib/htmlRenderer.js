@@ -80,6 +80,6 @@ const replacePlaceholders = (template, placeholder, value) => {
   return template.replace(pattern, value);
 };
 
-// fs.writeFile("team.html", )
+
 
 module.exports = render;
