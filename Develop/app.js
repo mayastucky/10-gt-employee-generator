@@ -56,23 +56,67 @@ const questions = [
     when: (response) => response.role === "Manager",
   },
   {
-    type: "confirm",
-    message: "Do you want to add more employees?",
+    // type: "confirm",
+    // message: "Do you want to add more employees?",
+    // name: "done",
+
+    type: "list",
+    message: "Do you want to add more team members?",
     name: "done",
+    choices: ["Yes", "No"],
   },
 ];
 
 inquirer
   .prompt(questions)
   .then(function (response) {
-    // console.log(response)
-    employeeInformation.push(response);
-    render(employeeInformation);
+    let employee;
+    // console.log(response, "this is");
+    if (response.role === "Engineer") {
+      employee = new Engineer(
+        response.name,
+        response.id,
+        response.email,
+        response.github
+      );
+    } else if (response.role === "Manager") {
+      employee = new Manager(
+        response.name,
+        response.id,
+        response.email,
+        response.officeNumber
+      );
+    } else if (response.role === "Intern") {
+      employee = new Intern(
+        response.name,
+        response.id,
+        response.email,
+        response.school
+      );
+    }
+    employeeInformation.push(employee);
+    //KEEP PROMPTING USER
+    // if (!response.done) {
+    //   return inquirer.prompt(questions);
+    // } else {
+    //   console.log(employeeInformation);
+    //   render(employeeInformation);
+    // }
+
+    if (response.done === "Yes") {
+      console.log("I want to add more team members");
+      inquirer.prompt(questions);
+    } else {
+      console.log("I don't want to add more team members.");
+    }
+
     //console.log(employeeInformation);
   })
   .catch(function (err) {
     console.log(err);
   });
+//need an empty team member array and every time the user fills out info for a new team
+//it gets pushed to that array
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will

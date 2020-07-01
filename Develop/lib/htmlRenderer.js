@@ -4,25 +4,24 @@ const fs = require("fs");
 const templatesDir = path.resolve(__dirname, "../templates");
 
 const render = (employees) => {
+  console.log(employees);
   const html = [];
-  html.push(employees);
-  // html.push(
-  //   employees
-  //     .filter((employee) => employee.getRole() === "Manager")
-  //     .map((manager) => renderManager(manager))
-  // );
-  // html.push(
-  //   employees
-  //     .filter((employee) => employee.getRole() === "Engineer")
-  //     .map((engineer) => renderEngineer(engineer))
-  // );
-  // html.push(
-  //   employees
-  //     .filter((employee) => employee.getRole() === "Intern")
-  //     .map((intern) => renderIntern(intern))
-  // );
-  console.log("Line 24 from HTMLRenderer", html);
-  // return renderMain(html.join(""));
+  html.push(
+    employees
+      .filter((employee) => employee.getRole() === "Manager")
+      .map((manager) => renderManager(manager))
+  );
+  html.push(
+    employees
+      .filter((employee) => employee.getRole() === "Engineer")
+      .map((engineer) => renderEngineer(engineer))
+  );
+  html.push(
+    employees
+      .filter((employee) => employee.getRole() === "Intern")
+      .map((intern) => renderIntern(intern))
+  );
+  return renderMain(html.join(""));
 };
 
 const renderManager = (manager) => {
@@ -80,5 +79,7 @@ const replacePlaceholders = (template, placeholder, value) => {
   const pattern = new RegExp("{{ " + placeholder + " }}", "gm");
   return template.replace(pattern, value);
 };
+
+// fs.writeFile("team.html", )
 
 module.exports = render;
