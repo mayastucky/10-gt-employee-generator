@@ -15,6 +15,7 @@ const employeeInformation = [];
 // and to create objects for each team member (using the correct classes as blueprints!)
 
 //thanks to Vol who taught our study group how to use these excellent "when" properties!
+//this is just an array of questions to ask the user
 const questions = [
   {
     type: "list",
@@ -56,20 +57,15 @@ const questions = [
     when: (response) => response.role === "Manager",
   },
   {
-    // type: "confirm",
-    // message: "Do you want to add more employees?",
-    // name: "done",
-
     type: "confirm",
     message: "Do you want to add more team members?",
     name: "done",
-    // choices: ["Yes", "No"],
   },
 ];
 
+//this function creates new employees based on the information the user provides and passes in their answers into those constructors.
 function showStarter(response) {
   let employee;
-  // console.log(response, "this is");
   if (response.role === "Engineer") {
     employee = new Engineer(
       response.name,
@@ -93,19 +89,16 @@ function showStarter(response) {
     );
   }
   employeeInformation.push(employee);
-  //KEEP PROMPTING USER
-  // if (!response.done) {
-  //   return inquirer.prompt(questions);
-  // } else {
-  //   console.log(employeeInformation);
-  //   render(employeeInformation);
-  // }
-
+  //the above line pushes the employee information into an empty array
+  //the code below checks if the user would like to add more members, which runs the function again.
+  //if the user says no, the entire array is rendered as HTML and written to a file called "team.html"
   if (response.done) {
     console.log("I want to add more team members");
     return inquirer.prompt(questions).then(showStarter);
   } else {
-    console.log("I don't want to add more team members.");
+    console.log(
+      "Please navigate to team.html in the develop folder to see the below members added."
+    );
   }
   fs.writeFileSync(outputPath, render(employeeInformation), "utf-8");
 }
@@ -115,14 +108,6 @@ inquirer
   .catch(function (error) {
     console.log(err);
   });
-
-//console.log(employeeInformation);
-// })
-// .catch(function (err) {
-//   console.log(err);
-// });
-//need an empty team member array and every time the user fills out info for a new team
-//it gets pushed to that array
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
