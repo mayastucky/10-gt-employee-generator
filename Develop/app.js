@@ -60,62 +60,67 @@ const questions = [
     // message: "Do you want to add more employees?",
     // name: "done",
 
-    type: "list",
+    type: "confirm",
     message: "Do you want to add more team members?",
     name: "done",
-    choices: ["Yes", "No"],
+    // choices: ["Yes", "No"],
   },
 ];
 
+function showStarter(response) {
+  let employee;
+  // console.log(response, "this is");
+  if (response.role === "Engineer") {
+    employee = new Engineer(
+      response.name,
+      response.id,
+      response.email,
+      response.github
+    );
+  } else if (response.role === "Manager") {
+    employee = new Manager(
+      response.name,
+      response.id,
+      response.email,
+      response.officeNumber
+    );
+  } else if (response.role === "Intern") {
+    employee = new Intern(
+      response.name,
+      response.id,
+      response.email,
+      response.school
+    );
+  }
+  employeeInformation.push(employee);
+  //KEEP PROMPTING USER
+  // if (!response.done) {
+  //   return inquirer.prompt(questions);
+  // } else {
+  //   console.log(employeeInformation);
+  //   render(employeeInformation);
+  // }
+
+  if (response.done) {
+    console.log("I want to add more team members");
+    return inquirer.prompt(questions).then(showStarter);
+  } else {
+    console.log("I don't want to add more team members.");
+  }
+  fs.writeFileSync(outputPath, render(employeeInformation), "utf-8");
+}
 inquirer
   .prompt(questions)
-  .then(function (response) {
-    let employee;
-    // console.log(response, "this is");
-    if (response.role === "Engineer") {
-      employee = new Engineer(
-        response.name,
-        response.id,
-        response.email,
-        response.github
-      );
-    } else if (response.role === "Manager") {
-      employee = new Manager(
-        response.name,
-        response.id,
-        response.email,
-        response.officeNumber
-      );
-    } else if (response.role === "Intern") {
-      employee = new Intern(
-        response.name,
-        response.id,
-        response.email,
-        response.school
-      );
-    }
-    employeeInformation.push(employee);
-    //KEEP PROMPTING USER
-    // if (!response.done) {
-    //   return inquirer.prompt(questions);
-    // } else {
-    //   console.log(employeeInformation);
-    //   render(employeeInformation);
-    // }
-
-    if (response.done === "Yes") {
-      console.log("I want to add more team members");
-      return inquirer.prompt(questions);
-    } else {
-      console.log("I don't want to add more team members.");
-      fs.writeFileSync(outputPath, render(employeeInformation), "utf-8");
-    }
-
-    //console.log(employeeInformation);
-  })
-  .catch(function (err) {
+  .then(showStarter)
+  .catch(function (error) {
     console.log(err);
   });
+
+//console.log(employeeInformation);
+// })
+// .catch(function (err) {
+//   console.log(err);
+// });
 //need an empty team member array and every time the user fills out info for a new team
 //it gets pushed to that array
 
