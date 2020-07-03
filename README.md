@@ -10,6 +10,8 @@ Run "npm install" after cloning down the repository. Then, run node app.js in yo
 
 ![](gif.gif)
 
+![Sample Application](sampleapp.png)
+
 ## Usage
 
 Use if you need a visually pleasing and easy to navigate application for all your teammates and their information.
